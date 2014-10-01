@@ -7,8 +7,9 @@ import java.util.Random;
 import java.util.Map.Entry;
 
 public class AttackModel {
+
 //	随机攻击过程(1-p)比例的随机攻击
-	public void attackProcess(NetWork netWork1,NetWork netWork2, double attackProb)
+	public void attackProcess(NetWork netWork1,NetWork netWork2,NetWork netWork3,double attackProb)
 	{
 //		初始攻击A网络的社区1
 		int communitySize = netWork1.community[0].communitySize;
@@ -22,19 +23,48 @@ public class AttackModel {
 			failedSet.add(index);
 		}
 		//开始级联失效
-		cascadeProcess(failedSet,netWork1,netWork2);
+		cascadeProcess(failedSet,netWork1,netWork2,netWork3);
 	}
 	//级联失效过程
-	public void cascadeProcess(HashSet<Integer> failedSet,NetWork netWork1,NetWork netWork2)
+	public void cascadeProcess(HashSet<Integer> failedSet,NetWork netWork1,NetWork netWork2,NetWork netWork3)
 	{
-		HashSet<Integer> set1,set2;//保存失效/被攻击节点标号
+		HashSet<Integer> set1,set2;
 		set1=set2=failedSet;
 		while(set1.size()>0&&set2.size()>0)
 		{
-			set2=failedFunc(set1,netWork1,netWork2);
-			if(set2.size()<=0)break;
-			set1=failedFunc(set2,netWork2,netWork1);
+			set2 = partialCascade(set1,netWork1,netWork2,netWork3);
+			if(set2.size()<=0)
+				break;
+			set1 = partialCascade(set2,netWork3,netWork2,netWork1);	
 		}
+		
+	}
+//	分阶段级联
+	public HashSet<Integer> partialCascade(HashSet<Integer> failedSet,NetWork attNetWork,NetWork casNetWork,NetWork otherNetwork)
+	{
+		HashSet<Integer> set1,set2;
+		set1=set2=failedSet;
+		HashSet<Integer> set3 = new HashSet<Integer>();
+		while(set1.size()>0&&set2.size()>0)
+		{
+			set2=failedFunc(set1,attNetWork,casNetWork);
+			if(set2.size()<=0)break;
+			set1=failedFunc(set2,casNetWork,attNetWork);
+		}
+// 		寻找第三个网络中，因前两个网络级联而失效的节点集合
+		int giantIndex = casNetWork.giantComponentIndex;
+		ArrayList<Integer> giantNodes = casNetWork.cluster_nodeList.get(giantIndex);
+		ArrayList<Integer> tempNodes = new ArrayList<Integer>();//临时保存失效节点标号
+		tempNodes.addAll(otherNetwork.currentAll);
+		otherNetwork.currentAll.removeAll(giantNodes);
+		for(Integer index:otherNetwork.currentAll)
+		{
+			set3.add(index);
+		}
+		otherNetwork.currentAll.clear();
+		otherNetwork.currentAll.addAll(tempNodes);
+		return set3;
+		
 	}
 	public HashSet<Integer> failedFunc(HashSet<Integer> failedSet,NetWork attNetwork,NetWork casNetWork)
 	{

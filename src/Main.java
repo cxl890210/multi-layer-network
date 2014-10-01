@@ -16,6 +16,7 @@ public class Main {
 		double attackProb = 0.10;//被攻击顶点比例
 		double alpha = 0.0;
 		double beta = 0.98;
+		double theta = 0.0;
 		//设置输出目录结构
 		String root="../data/CommunityAttack/meanDegree="+meanDegree+"/cascadeProcess/alpha="+alpha+"/"
 				+"beta="+beta+"/";/***/	
@@ -35,9 +36,9 @@ public class Main {
 		AttackModel attack = new AttackModel();
 		while(attackProb<=1.0)
 		{
-			model cascadeModel = new model(nodeCount,outEdge,edgeCount,alpha,beta);
+			model cascadeModel = new model(nodeCount,outEdge,edgeCount,alpha,beta,theta);
 //			模拟随机攻击，并取得最大连通分支尺度
-			attack.attackProcess(cascadeModel.netWork1, cascadeModel.netWork2, attackProb);
+			attack.attackProcess(cascadeModel.netWork1, cascadeModel.netWork2,cascadeModel.netWork3,attackProb);
 			int giantIndex = cascadeModel.netWork1.giantComponentIndex;
 			int giantSize = cascadeModel.netWork1.cluster_nodeList.get(giantIndex).size();
 			System.out.println("giantSize:"+giantSize);

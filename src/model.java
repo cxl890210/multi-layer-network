@@ -7,15 +7,20 @@ public class model {
 //	双层网络
 	public NetWork netWork1;
 	public NetWork netWork2;
+	public NetWork netWork3;
+	public int lager_size;
+	public int smaller_size;
 //	生成两个社区
-	public model(int nodeCount,int outEdge,int edgeCount,double alpha,double beta) throws IOException
+	public model(int nodeCount,int outEdge,int edgeCount,double alpha,double beta,double theta) throws IOException
 	{
 		this.nodeCount = nodeCount;
-		netWork1 = new NetWork(nodeCount,alpha);//初始化两个社区
+		//初始化三个网络
+		netWork1 = new NetWork(nodeCount,alpha);
 		netWork2 = new NetWork(nodeCount,beta);
+		netWork3 = new NetWork(nodeCount,theta);
 		produceNetWork(netWork1,edgeCount);
 		produceNetWork(netWork2,edgeCount);
-		interConnctFunction(netWork1,netWork2);//社区之间连边
+		produceNetWork(netWork3, edgeCount);
 		System.out.println("Construct Network Finish!");
 	}
 //	网络之间的一一连接(全耦合)
@@ -106,8 +111,6 @@ public class model {
 	{
 		int lager_branch=0;//记录较大连通分支号
 		int smaller_branch=0;
-		int lager_size;
-		int smaller_size;
 		ArrayList<Integer> lager_cluster;//大集团
 		ArrayList<Integer> smaller_cluster;//小集团
 		int clusterSize1=netWork.cluster_nodeList.get(point1.branchNumber).size();
