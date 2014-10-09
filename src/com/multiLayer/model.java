@@ -20,24 +20,9 @@ public class model {
 		netWork2 = new NetWork(nodeCount,beta,2);
 		netWork3 = new NetWork(nodeCount,theta,3);
 		produceNetWork(netWork1,edgeCount);
-		System.out.println("Construct Network Finish!");
 		produceNetWork(netWork2,edgeCount);
-		System.out.println("Construct Network Finish!");
 		produceNetWork(netWork3, edgeCount);
 		System.out.println("Construct Network Finish!");
-	}
-//	网络之间的一一连接(全耦合)
-	public void interConnctFunction(NetWork netWork1,NetWork netWork2) throws IOException
-	{
-		for(int i=0;i<nodeCount;i++)
-		{
-			Point net1Point = netWork1.points[i];
-			Point net2Point = netWork2.points[i];
-			netWork1.interConnect.put(i,i);
-			netWork2.interConnect.put(i, i);
-			netWork1.outLinkNodes.add(net1Point);
-			netWork2.outLinkNodes.add(net2Point);
-		}
 	}
 	public void produceNetWork(NetWork netWork,int edgeCount) throws IOException
 	{

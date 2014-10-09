@@ -53,12 +53,8 @@ public class AttackModel {
 // 		寻找第三个网络中，因前两个网络级联而失效的节点集合
 		int giantIndex = casNetWork.giantComponentIndex;
 		ArrayList<Integer> giantNodes = casNetWork.cluster_nodeList.get(giantIndex);
-//		if(giantNodes.size()<=1)return set3;
 		otherNetwork.currentAll.removeAll(giantNodes);
-		for(Integer index:otherNetwork.currentAll)
-		{
-			set3.add(index);
-		}
+		set3.addAll(otherNetwork.currentAll);
 		otherNetwork.currentAll.clear();
 		otherNetwork.currentAll.addAll(giantNodes);
 		return set3;
@@ -99,13 +95,11 @@ public class AttackModel {
 //		寻找set2
 		ArrayList<Integer> giantNodes=attNetwork.cluster_nodeList.get(giantCluster);//当前最大连通分支节点标号集合
 		attCurrentAll.removeAll(giantNodes);
-		for(Integer index:attCurrentAll)
-		{
-			set.add(index);
-		}
-		casCurrentAll.removeAll(attCurrentAll);
+		set.addAll(attCurrentAll);
+		casCurrentAll.clear();
 		attCurrentAll.clear();
 		attCurrentAll.addAll(giantNodes);
+		casCurrentAll.addAll(giantNodes);
 		return set;
 	}
 	public void delNeighbor(Point failedPoint)
