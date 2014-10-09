@@ -11,16 +11,16 @@ public class Main {
 	{
 //		控制参量
 		int meanDegree = 4;
-		int nodeCount = 10000;
+		int nodeCount = 16000;
 		int edgeCount = 2*nodeCount;
 		int outEdge = nodeCount;//外部连边数
 		double attackProb = 0.10;//初始被攻击顶点比例
-		double alpha = 0.5;
-		double beta = 0.58;
-		double theta = 0.5;
+		double alpha = 0.55;
+		double beta = 0.95;
+		double theta = 0.95;
 		//设置输出目录结构
 		String root="../data/MultiLayer-CommunityAttack/meanDegree="+meanDegree+"/cascadeProcess/alpha="+alpha+"/"
-				+"beta="+beta+"/";/***/	
+				+"beta="+beta+"/test2/";/***/	
 		String dir = root+nodeCount+"/";
 		String result_dir = dir+"result.txt";
 		File file=new File(dir);
@@ -35,6 +35,7 @@ public class Main {
 		NumberFormat  nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(10);
 		AttackModel attack = new AttackModel();
+		long begin = System.currentTimeMillis();
 		while(attackProb<=1.0)
 		{
 			model cascadeModel = new model(nodeCount,outEdge,edgeCount,alpha,beta,theta);
@@ -49,6 +50,8 @@ public class Main {
 			bw_result.flush();
 			attackProb+=0.02;
 		}
+		long end = System.currentTimeMillis();
+		System.out.println("USED TIME : "+(end-begin));
 		bw_result.close();
 	}
 }

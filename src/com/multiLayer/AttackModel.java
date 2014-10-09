@@ -141,7 +141,6 @@ public class AttackModel {
 		int maxSize=-1;
 		HashMap<Integer,ArrayList<Integer>> cluster_nodeList = netWork.cluster_nodeList;
 		ArrayList<Integer> tempList;
-		
 		for(Iterator<Entry<Integer, ArrayList<Integer>>> it=cluster_nodeList.entrySet().iterator();it.hasNext();)
 		{	
 			entry= it.next();
