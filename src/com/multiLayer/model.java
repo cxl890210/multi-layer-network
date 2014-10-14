@@ -12,16 +12,16 @@ public class model {
 	public int lager_size;
 	public int smaller_size;
 //	生成两个社区
-	public model(int nodeCount,int outEdge,int edgeCount,double alpha,double beta,double theta) throws IOException
+	public model(int nodeCount,int outEdge,ArrayList<Integer> edgeCount,double alpha,double beta,double theta) throws IOException
 	{
 		this.nodeCount = nodeCount;
 		//初始化三个网络
 		netWork1 = new NetWork(nodeCount,alpha,1);
 		netWork2 = new NetWork(nodeCount,beta,2);
 		netWork3 = new NetWork(nodeCount,theta,3);
-		produceNetWork(netWork1,edgeCount);
-		produceNetWork(netWork2,edgeCount);
-		produceNetWork(netWork3, edgeCount);
+		produceNetWork(netWork1,edgeCount.get(0));
+		produceNetWork(netWork2,edgeCount.get(1));
+		produceNetWork(netWork3, edgeCount.get(2));
 		System.out.println("Construct Network Finish!");
 	}
 	public void produceNetWork(NetWork netWork,int edgeCount) throws IOException

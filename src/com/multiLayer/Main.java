@@ -4,24 +4,38 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args) throws IOException
 	{
 		//控制参量
-		int nodeCount = 45000;
-		int edgeCount = 2*nodeCount;
+		int nodeCount = 50000;
+//		int meanDegree1 = 8;
+//		int meanDegree2 = 6;
+//		int meanDegree3 = 4;
+//		int edgeCount = 4*nodeCount;//
+		ArrayList<Integer> edgeCount = new ArrayList<Integer>();
+		for(int i=2;i<5;i++)
+			{
+			edgeCount.add(i*nodeCount);
+			}
+		for(Integer j:edgeCount)
+			System.out.println(j);
 		int outEdge = nodeCount;//外部连边数
-		double alpha = 0.0;
-		double beta = 0.0;
-		double theta = 0.0;
 		int fileNum = 10;
+		double beta = 0.95;
+		double theta = 0.95;
 		//设置输出目录结构
-		String root="../data/MultiNetwork-CommAttack/nodeCount="+nodeCount+"/cascadeProcess/criticalProb/";	
+		String root="../data/MultiNetwork-CommAttack/multiMeanDegree/nodeCount="+nodeCount+"/cascadeProcess/criticalProb/";	
 		NumberFormat  nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(10);
+		//	建立攻击策略
+		AttackModel attack = new AttackModel();
 		for(int i=0;i<fileNum;i++)
 		{
+			double alpha = 0.0;
+//			double theta = 0.0;
 			System.out.println("MODEL: "+i);
 			String dir = root+i+"/";
 			String result_dir = dir+"result.txt";
@@ -34,15 +48,16 @@ public class Main {
 				System.exit(0);
 			}
 			BufferedWriter bw_result = new BufferedWriter(new FileWriter(result_dir));
-			//	建立攻击策略
-			AttackModel attack = new AttackModel();
 			//测试运行时间		
 			long begin = System.currentTimeMillis();
-			while(theta<1.0){
-				while (beta<1.0) {
+//			while(theta<1.0){
+//				beta = 0;
+//				while (theta<1.0) 
+				{
+//					alpha = 0;
 					while(alpha<1.0){
 						double highProb = 0.8;
-						double lowProb = 0.1;
+						double lowProb = 0.2;
 						double midProb = (highProb+lowProb)/2;
 						double eps = 0.01;
 						double threshold = 0.1;
@@ -84,12 +99,21 @@ public class Main {
 						System.out.println("lowProb："+lowProb+"\t"+"highProb: "+highProb);
 						bw_result.write(alpha+"\t"+beta+'\t'+theta+"\t"+criticalProb+"\n");
 						bw_result.flush();
+						if(alpha<0.89)
 						alpha+=0.1;
+						else 
+							alpha+=0.02;
 					}
-					beta+=0.1;
+//					if(theta<0.89)
+//					theta+=0.1;
+//					else 
+//						theta+=0.04;
 				}
-				theta+=0.1;
-			}
+//				if(theta<0.89)
+//					theta+=0.3;
+//				else 
+//				theta+=0.04;
+//			}
 			long end = System.currentTimeMillis();
 			System.out.println("USED TIME : "+(end-begin));
 			bw_result.close();
