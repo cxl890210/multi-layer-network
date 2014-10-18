@@ -17,9 +17,9 @@ public class Main {
 //		int edgeCount = 4*nodeCount;//
 		ArrayList<Integer> edgeCount = new ArrayList<Integer>();
 		for(int i=2;i<5;i++)
-			{
-			edgeCount.add(i*nodeCount);
-			}
+		{
+			edgeCount.add(3*nodeCount);
+		}
 		for(Integer j:edgeCount)
 			System.out.println(j);
 		int outEdge = nodeCount;//外部连边数

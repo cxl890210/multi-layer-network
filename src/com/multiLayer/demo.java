@@ -1,5 +1,6 @@
 package com.multiLayer;
-
+import java.util.Scanner;
+import java.io.*;
 public class demo {
 
 	public void display(int[] a)
@@ -9,11 +10,14 @@ public class demo {
 			System.out.println(num);
 		}
 	}
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
-		int a[] = {1,2,3,4};
-		demo test = new demo();
-		test.display(a);
+		System.out.println("test");
+		Scanner inScanner = new Scanner(System.in);
+		float a = inScanner.nextFloat();
+		BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
+	    String testString = buf.readLine();
+		System.out.println(testString);
 	}
 
 }
